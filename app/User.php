@@ -15,9 +15,13 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name',
+        'email',
+        'password',
+        'photo_id',
+        'role_id',
+        'is_active',
     ];
-
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -30,5 +34,27 @@ class User extends Authenticatable
     public function role()
     {
         return $this->belongsTo('App\Role', 'role_id');
+    }
+
+    public function photo()
+    {
+        return $this->belongsTo('App\Photo', 'photo_id');
+    }
+
+    /* MUTATORS, REMEMBER MUTATORS NO "return" */
+    public function setPasswordAttribute($password)
+    {
+        if(!empty($password)) {
+            $this->attributes['password'] = bcrypt($password);
+        }
+    }
+
+    public function isAdmin()
+    {
+        if($this->role->name == "Admin" && $this->is_active == 1) {
+            return true;
+        }
+
+        return false;
     }
 }

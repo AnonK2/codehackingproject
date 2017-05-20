@@ -16,8 +16,13 @@
           </div>
 
           <div class="form-group">
+              {!! Form::label('path', 'File: ', ['class' => 'form-control-label']) !!}
+              {!! Form::file('path', null, ['class' => 'form-control']) !!}
+          </div>
+
+          <div class="form-group">
               {!! Form::label('password', 'Password : ', ['class' => 'form-control-label']) !!}
-              {!! Form::text('password', null, ['class' => 'form-control']) !!}
+              {!! Form::password('password', ['class' => 'form-control']) !!}
           </div>
 
           <div class="form-group">
@@ -26,8 +31,8 @@
           </div>
 
           <div class="form-group">
-              {!! Form::label('status', 'Status: ', ['class' => 'form-control-label']) !!}
-              {!! Form::select('status', ['0' => 'Not Activate', '1' => 'Activated'], ['class' => 'form-control']) !!}
+              {!! Form::label('is_active', 'Status: ', ['class' => 'form-control-label']) !!}
+              {!! Form::select('is_active', [0 => 'Not Activate', 1 => 'Activated'], ['class' => 'form-control']) !!}
           </div>
 
           <div class="form-group">
@@ -35,5 +40,7 @@
           </div>
 
         {!! Form::close() !!}
+
+        @include('includes.form-error')
     </div>
 @endsection

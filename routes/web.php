@@ -20,9 +20,12 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group([
+  'middleware' => ['admin'],
   'prefix' => '/admin',
 ], function() {
 
     Route::resource('/users', 'AdminUsersController', ['as' => 'admin']);
+    Route::resource('/users', 'AdminPostsController', ['as' => 'admin']);
+    Route::resource('/users', 'AdminCategoriesController', ['as' => 'admin']);
 
 });

@@ -11,10 +11,18 @@
 |
 */
 
-Route::get('/', function () {
-    return view('vendor.adminlte.home');
+Route::get('/admin', function () {
+    return view('admin.index');
 });
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::group([
+  'prefix' => '/admin',
+], function() {
+
+    Route::resource('/users', 'AdminUsersController', ['as' => 'admin']);
+
+});

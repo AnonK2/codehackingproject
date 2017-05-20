@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Session;
 use App\Post;
 use App\User;
 use App\Photo;
+use App\Category;
 
 class AdminPostsController extends Controller
 {
@@ -33,7 +34,9 @@ class AdminPostsController extends Controller
      */
     public function create()
     {
-        return view('admin.posts.create');
+        $categories = Category::pluck('name', 'id')->toArray();
+
+        return view('admin.posts.create', compact('categories'));
     }
 
     /**
@@ -84,7 +87,10 @@ class AdminPostsController extends Controller
      */
     public function edit($id)
     {
-        return view('admin.posts.edit');
+        $post = Post::findOrFail($id);
+        $category = Category::pluck('name', 'id')->toArray();
+
+        return view('admin.posts.edit', compact('post', 'category'));
     }
 
     /**
@@ -94,9 +100,23 @@ class AdminPostsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PostsRequest $request, $id)
     {
-        //
+        $user = Auth::user();
+        $input = $request->all();
+
+        if($file = $request['photo_id']) {
+            $time = str_replace([' ', ':', '-'], '_', Carbon::now());
+            $name = $time . '_' . $file->getClientOriginalName();
+
+            $file->move(public_path() . "/images/", $name);
+            $input['photo_id'] = Photo::create(['path' => $name])->id;
+            $user->posts()->whereId($id)->first()->update($input);
+
+            Session::flash('update_post_msg', 'Post successfully updated!');
+
+            return redirect()->route('admin.posts.index');
+        }
     }
 
     /**
@@ -107,6 +127,13 @@ class AdminPostsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $post = Post::findOrFail($id);
+        unlink(public_path() . $post->photo->path);//REMOVE POST'S PHOTO FROM public/images/
+        $photo = Photo::findOrFail($post->photo->id)->delete();
+        $post->delete();
+
+        Session::flash('delete_post_msg', 'Post successfully deleted!');
+
+        return redirect()->route('admin.posts.index');
     }
 }

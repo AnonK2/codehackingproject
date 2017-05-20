@@ -41,10 +41,10 @@
         </ul>
       </li>
       <li class="treeview">
-        <a href="#"><span>Multilevel</span> <i class="fa fa-angle-left pull-right"></i></a>
+        <a href="#"><span>Posts</span> <i class="fa fa-angle-left pull-right"></i></a>
         <ul class="treeview-menu">
-          <li><a href="#">Link in level 2</a></li>
-          <li><a href="#">Link in level 2</a></li>
+          <li><a href="{{ route('admin.posts.index') }}">All Posts</a></li>
+          <li><a href="{{ route('admin.posts.create') }}">Create Post</a></li>
         </ul>
       </li>
     </ul><!-- /.sidebar-menu -->

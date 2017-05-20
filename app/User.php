@@ -41,6 +41,11 @@ class User extends Authenticatable
         return $this->belongsTo('App\Photo', 'photo_id');
     }
 
+    public function posts()
+    {
+        return $this->hasMany('App\Post', 'user_id');
+    }
+
     /* MUTATORS, REMEMBER MUTATORS NO "return" */
     public function setPasswordAttribute($password)
     {

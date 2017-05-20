@@ -25,7 +25,7 @@ Route::group([
 ], function() {
 
     Route::resource('/users', 'AdminUsersController', ['as' => 'admin']);
-    Route::resource('/users', 'AdminPostsController', ['as' => 'admin']);
-    Route::resource('/users', 'AdminCategoriesController', ['as' => 'admin']);
+    Route::resource('/posts', 'AdminPostsController', ['as' => 'admin']);
+    Route::resource('/categories', 'AdminCategoriesController', ['as' => 'admin']);
 
 });
